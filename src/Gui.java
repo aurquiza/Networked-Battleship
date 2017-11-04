@@ -7,7 +7,8 @@
  * - This program is a gui simulation of the game Battleship, where two players can go against each other and attempt
  *   to sink the other player's fleet. The first player to sink the other player's fleet wins.
  * 
- * - This class is the heart of the program where main is located as well as a custom JFrame class that helps 
+ * - This class is the heart of the program where main is located as well as a custom JFrame class that helps put all of 
+ *   the components of the gui together, such as the menus, jpanels, sockets, and buttons.
  */
 
 import java.awt.*;
