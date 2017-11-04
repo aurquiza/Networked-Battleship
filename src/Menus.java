@@ -6,12 +6,16 @@ import java.awt.event.*;
 
 public class Menus extends JFrame
 {
+	// items that belong to the file menu
 	private JMenuItem exitItem;
 	private JMenuItem aboutItem;
-	private JMenuItem helpRulesItem;
-	private JMenuItem helpConnectItem;
 	private JMenuItem statsItem;
 	
+	// items that belong to the help menu
+	private JMenuItem helpRulesItem;
+	private JMenuItem helpConnectItem;
+	
+	// jmenus that will hold multiple jmenu items
 	private JMenu fileMenu;
 	private JMenu connectMenu;
 	private JMenu helpMenu;
