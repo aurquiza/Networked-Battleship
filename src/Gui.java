@@ -17,14 +17,38 @@ import java.awt.event.*;
 
 public class Gui extends JFrame
 {
-	private Container mainContainer;
+	// master containers that will help keep better organization of the gui
+	private Container masterContainer;
 	private JMenuBar masterBar;
-	
 	private JPanel masterPanel;
+	
+	//panels where components to play game will be added
+	private JPanel userShipsInterface;
+	private JPanel enemyShipsInterface;
+	private JPanel statusBar;
+	
+	private Menus menus;
 	
 	public Gui()
 	{
 		super("CS 342 Project 4 (Networked-Battleship)");
+		
+		// create master panel w/ borderlayout for nicer positioning
+		masterPanel = new JPanel(new BorderLayout());
+		
+		// add master panel to the content pane to show gui components
+		masterContainer = getContentPane();
+		masterContainer.add(masterPanel);
+		
+		// creates the menu bar and adds it to the content pane
+		masterBar = new JMenuBar();
+		setJMenuBar(masterBar);
+		
+		// create menus and add them to menu bar
+		menus = new Menus();
+		masterBar.add(menus.getFileMenu());
+		masterBar.add(menus.getHelpMenu());
+		masterBar.add(menus.getConnectMenu());
 		
 		
 		setSize(300,300);
@@ -34,9 +58,9 @@ public class Gui extends JFrame
 	
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
 		System.out.println("Testing");
-		
+		Gui app = new Gui();
+		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
 
