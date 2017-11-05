@@ -45,13 +45,13 @@ public class Gui extends JFrame
 		setJMenuBar(masterBar);
 		
 		// create menus and add them to menu bar
-		menus = new Menus();
+		menus = new Menus(this);
 		masterBar.add(menus.getFileMenu());
 		masterBar.add(menus.getHelpMenu());
 		masterBar.add(menus.getConnectMenu());
 		
 		
-		setSize(300,300);
+		setSize(500,500);
 		setVisible(true);
 	}
 	
