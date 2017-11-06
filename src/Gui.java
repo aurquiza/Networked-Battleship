@@ -29,12 +29,19 @@ public class Gui extends JFrame
 	
 	private Menus menus;
 	
+	UserOceanGrid player1;
+	
 	public Gui()
 	{
 		super("CS 342 Project 4 (Networked-Battleship)");
 		
 		// create master panel w/ borderlayout for nicer positioning
 		masterPanel = new JPanel(new BorderLayout());
+		userShipsInterface = new JPanel(new BorderLayout());
+		masterPanel.add(userShipsInterface, BorderLayout.EAST);
+		
+		player1 = new UserOceanGrid();
+		userShipsInterface.add(player1.getOceanPanel());
 		
 		// add master panel to the content pane to show gui components
 		masterContainer = getContentPane();
@@ -49,6 +56,8 @@ public class Gui extends JFrame
 		masterBar.add(menus.getFileMenu());
 		masterBar.add(menus.getHelpMenu());
 		masterBar.add(menus.getConnectMenu());
+		
+		
 		
 		
 		setSize(500,500);

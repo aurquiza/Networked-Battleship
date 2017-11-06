@@ -1,5 +1,8 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
 
-public class Coordinates 
+public class Coordinates extends JButton
 {
 	int X;
 	int Y;
