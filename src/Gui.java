@@ -30,6 +30,7 @@ public class Gui extends JFrame
 	private Menus menus;
 	
 	UserOceanGrid player1;
+	EnemyOceanGrid player2;
 	
 	public Gui()
 	{
@@ -37,11 +38,16 @@ public class Gui extends JFrame
 		
 		// create master panel w/ borderlayout for nicer positioning
 		masterPanel = new JPanel(new BorderLayout());
-		userShipsInterface = new JPanel(new BorderLayout());
-		masterPanel.add(userShipsInterface, BorderLayout.EAST);
+		userShipsInterface = new JPanel(new GridBagLayout());
+		enemyShipsInterface = new JPanel(new GridBagLayout());
 		
 		player1 = new UserOceanGrid();
-		userShipsInterface.add(player1.getOceanPanel());
+		player2 = new EnemyOceanGrid();
+		organizeUserGrid();
+		organizeEnemyGrid();
+		
+		setLayout(new BorderLayout());
+		
 		
 		// add master panel to the content pane to show gui components
 		masterContainer = getContentPane();
@@ -57,11 +63,44 @@ public class Gui extends JFrame
 		masterBar.add(menus.getHelpMenu());
 		masterBar.add(menus.getConnectMenu());
 		
+		masterPanel.add(userShipsInterface, BorderLayout.WEST);
+		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
 		
 		
-		
-		setSize(500,500);
+		setSize(1000,500);
 		setVisible(true);
+	}
+	
+	public void organizeUserGrid()
+	{
+		GridBagConstraints c = new GridBagConstraints();
+		
+		
+		c.gridx = 1;
+		c.gridy = 0;
+		userShipsInterface.add(player1.getLetterPanel(),c);
+		c.gridx = 1;
+		c.gridy = 1;
+		userShipsInterface.add(player1.getOceanPanel(),c);
+		c.gridx = 0;
+		c.gridy = 1;
+		userShipsInterface.add(player1.getNumberPanel(),c);
+	}
+	
+	public void organizeEnemyGrid()
+	{
+		GridBagConstraints b = new GridBagConstraints();
+		
+		b.gridx = 1;
+		b.gridy = 0;
+		enemyShipsInterface.add(player2.getLetterPanel(),b);
+		b.ipadx = 0;
+		b.gridx = 1;
+		b.gridy = 1;
+		enemyShipsInterface.add(player2.getOceanPanel(),b);
+		b.gridx = 0;
+		b.gridy = 1;
+		enemyShipsInterface.add(player2.getNumberPanel(),b);
 	}
 	
 	

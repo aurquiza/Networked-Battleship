@@ -3,7 +3,6 @@ import java.io.*;
 
 public class Server
 {
-	private Coordinates point;
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 	private Gui gui;
@@ -12,7 +11,6 @@ public class Server
 	{
 		serverSocket = null;
 		clientSocket = null;
-		point = new Coordinates(3,3);
 		this.gui = gui;
 		
 		System.out.println("Creating Server...");
