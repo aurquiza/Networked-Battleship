@@ -48,6 +48,7 @@ public class EnemyOceanGrid
 		for(int i = 0; i < 10; i++)
 		{
 			letterButtons[i] = new JButton(Character.toString((char)(65 + i)));
+			letterButtons[i].setPreferredSize(new Dimension(30,30));
 			letterPanel.add(letterButtons[i]);
 		}
 	}
@@ -61,6 +62,7 @@ public class EnemyOceanGrid
 		for(int i = 0; i < 10; i++)
 		{
 			numberButtons[i] = new JButton(Integer.toString(i));
+			numberButtons[i].setPreferredSize(new Dimension(30,30));
 			numberPanel.add(numberButtons[i]);
 		}
 	}
@@ -68,7 +70,7 @@ public class EnemyOceanGrid
 	private void createOceanGrid()
 	{
 		
-		GridLayout oceanGrid = new GridLayout(10,10,1,1);
+		GridLayout oceanGrid = new GridLayout(10,10,0,0);
 		oceanPanel = new JPanel(oceanGrid);
 		oceanButtons = new Coordinates[10][10];
 		
@@ -77,7 +79,7 @@ public class EnemyOceanGrid
 			for(int y = 0; y < 10; y++)
 			{
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
-				oceanButtons[x][y].setText(Integer.toString(x));
+				oceanButtons[x][y].setPreferredSize(new Dimension(30,30));
 				oceanPanel.add(oceanButtons[x][y]);
 			}
 		}

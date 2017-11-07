@@ -46,8 +46,6 @@ public class Gui extends JFrame
 		organizeUserGrid();
 		organizeEnemyGrid();
 		
-		setLayout(new BorderLayout());
-		
 		
 		// add master panel to the content pane to show gui components
 		masterContainer = getContentPane();
@@ -67,7 +65,7 @@ public class Gui extends JFrame
 		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
 		
 		
-		setSize(1000,500);
+		setSize(700,500);
 		setVisible(true);
 	}
 	
