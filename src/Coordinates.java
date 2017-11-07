@@ -4,22 +4,23 @@ import java.awt.event.*;
 
 public class Coordinates extends JButton
 {
-	int X;
-	int Y;
+	private int X;
+	private int Y;
 	
-	public Coordinates(int x, int y)
+	public Coordinates(String s,int x, int y)
 	{
-		super(" ");
+		super(s);
 		X = x;
 		Y = y;
 	}
 	
-	public int getX()
+	
+	public int getCoordX()
 	{
 		return X;
 	}
 	
-	public int getY()
+	public int getCoordY()
 	{
 		return Y;
 	}

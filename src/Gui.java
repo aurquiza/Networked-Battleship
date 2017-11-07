@@ -44,7 +44,9 @@ public class Gui extends JFrame
 		player1 = new UserOceanGrid();
 		player2 = new EnemyOceanGrid();
 		organizeUserGrid();
-		organizeEnemyGrid();		
+		organizeEnemyGrid();
+		
+		setLayout(new BorderLayout());
 		
 		
 		// add master panel to the content pane to show gui components

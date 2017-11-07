@@ -8,7 +8,7 @@ public class UserOceanGrid
 	private JPanel numberPanel;
 	private JPanel letterPanel;
 	
-	private JButton oceanButtons[][];
+	private Coordinates oceanButtons[][];
 	private JButton letterButtons[];
 	private JButton numberButtons[];
 	
@@ -17,7 +17,6 @@ public class UserOceanGrid
 		oceanPanel = null;
 		numberPanel = null;
 		letterPanel = null;
-		oceanButtons = null;
 		
 		createOceanGrid();
 		createNumberPanel();
@@ -70,14 +69,14 @@ public class UserOceanGrid
 		
 		GridLayout oceanGrid = new GridLayout(10,10,1,1);
 		oceanPanel = new JPanel(oceanGrid);
-		oceanButtons = new JButton[10][10];
+		oceanButtons = new Coordinates[10][10];
 		
 		for(int x = 0; x < 10; x++)
 		{
 			for(int y = 0; y < 10; y++)
 			{
-				oceanButtons[x][y] = new JButton();
-				oceanButtons[x][y].setText(Integer.toString(x));
+				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
+				//oceanButtons[x][y].setText(Integer.toString(x));
 				oceanPanel.add(oceanButtons[x][y]);
 			}
 		}
