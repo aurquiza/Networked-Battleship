@@ -9,6 +9,7 @@ public class Coordinates extends JButton
 	
 	public Coordinates(int x, int y)
 	{
+		super(" ");
 		X = x;
 		Y = y;
 	}
