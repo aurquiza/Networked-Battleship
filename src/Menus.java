@@ -2,6 +2,9 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 
 public class Menus extends JFrame
@@ -31,6 +34,11 @@ public class Menus extends JFrame
 	private Client client;
 	private Server server;
 	
+	//HTML Files
+	private final File ABOUTFILE = new File("src/aboutAuthors.html"); 		//File: about file
+	private final File HOWTOPLAY = new File("src/howToPlay.html"); 			//Help: how to play file
+	private final File HOWTOCONNECT = new File("src/howToConnect.html"); 	//Help: how to connect file
+	
 	public Menus(Gui gui)
 	{
 		this.gui = gui;
@@ -46,30 +54,23 @@ public class Menus extends JFrame
 	
 	private void addFileMenuItems()
 	{
-		exitItem = new JMenuItem("Exit");
-		fileMenu.add(exitItem);
-		
-		aboutItem = new JMenuItem("About");
-		fileMenu.add(aboutItem);
-		aboutItem.addActionListener
-		(
-			new ActionListener()
-			{
-				public void actionPerformed(ActionEvent event)
-				{
-					JOptionPane.showMessageDialog(Menus.this,
-							"Authors: \n" +
-							"Alexis Urquiza (aurqui7) \n" +
-							"Robert Barrera (rbarre4) \n" +
-							"Muhammad Arsalan Chaudry (mchaud25)\n",
-							"About",
-							JOptionPane.PLAIN_MESSAGE);
-				}
-			}
-		);
+        aboutItem = new JMenuItem("About");
+        fetch(aboutItem, ABOUTFILE);
+        fileMenu.add(aboutItem);
 		
 		statsItem = new JMenuItem("Game Statistics");
 		fileMenu.add(statsItem);
+		
+        //Exit option
+        exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	System.exit(0);
+            }
+        });
+        
+		fileMenu.add(exitItem);
 	}
 	
 	
@@ -140,11 +141,13 @@ public class Menus extends JFrame
 	}
 	
 	private void addHelpMenuItems()
-	{
+	{	
 		helpRulesItem = new JMenuItem("Help: How to play");
+		fetch(helpRulesItem, HOWTOPLAY);
 		helpMenu.add(helpRulesItem);
 		
 		helpConnectItem = new JMenuItem("Help: How to connect");
+		fetch(helpConnectItem, HOWTOCONNECT);
 		helpMenu.add(helpConnectItem);
 	}
 	
@@ -163,4 +166,30 @@ public class Menus extends JFrame
 	{
 		return helpMenu;
 	}
+	
+	
+    /**
+     * function to get the content of the file and display in dialog box
+     */
+    private void fetch(JMenuItem menuItem, File source) {
+        try {
+            String content;
+            if(source.isFile()){
+                content = new Scanner(source).useDelimiter("\\Z").next();
+            }else{
+                content = "on " + menuItem.getText() + " failed to fine source file \"" + source.getName() + "\". Please check the path.";
+            }
+            JLabel message = new JLabel(content);
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JMenuItem self = (JMenuItem)e.getSource();
+                    JOptionPane.showMessageDialog(Menus.this, message, self.getText(), JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+        }
+    }
 }
