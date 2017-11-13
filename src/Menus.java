@@ -34,7 +34,10 @@ public class Menus extends JFrame
 	private Client client;
 	private Server server;
 	
-	private final File ABOUTFILE = new File("src/aboutAuthors.html"); //about file
+	//HTML Files
+	private final File ABOUTFILE = new File("src/aboutAuthors.html"); 		//File: about file
+	private final File HOWTOPLAY = new File("src/howToPlay.html"); 			//Help: how to play file
+	private final File HOWTOCONNECT = new File("src/howToConnect.html"); 	//Help: how to connect file
 	
 	public Menus(Gui gui)
 	{
@@ -138,11 +141,13 @@ public class Menus extends JFrame
 	}
 	
 	private void addHelpMenuItems()
-	{
+	{	
 		helpRulesItem = new JMenuItem("Help: How to play");
+		fetch(helpRulesItem, HOWTOPLAY);
 		helpMenu.add(helpRulesItem);
 		
 		helpConnectItem = new JMenuItem("Help: How to connect");
+		fetch(helpConnectItem, HOWTOCONNECT);
 		helpMenu.add(helpConnectItem);
 	}
 	
