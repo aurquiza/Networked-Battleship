@@ -35,6 +35,7 @@ public class Gui extends JFrame
 	public Gui()
 	{
 		super("CS 342 Project 4 (Networked-Battleship)");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// create master panel w/ borderlayout for nicer positioning
 		masterPanel = new JPanel(new BorderLayout());
@@ -100,14 +101,6 @@ public class Gui extends JFrame
 		b.gridy = 1;
 		enemyShipsInterface.add(player2.getNumberPanel(),b);
 	}
-	
-	
-	public static void main(String[] args)
-	{
-		System.out.println("Testing");
-		Gui app = new Gui();
-		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	}
 
 }
