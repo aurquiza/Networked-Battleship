@@ -29,8 +29,8 @@ public class Gui extends JFrame
 	
 	private Menus menus;
 	
-	UserOceanGrid player1;
-	EnemyOceanGrid player2;
+	private UserOceanGrid player1;
+	private EnemyOceanGrid player2;
 	
 	public Gui()
 	{
