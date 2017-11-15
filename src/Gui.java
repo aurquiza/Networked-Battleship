@@ -66,7 +66,7 @@ public class Gui extends JFrame
 		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
 		
 		
-		setSize(700,500);
+		setSize(1280,720);
 		setVisible(true);
 	}
 	
