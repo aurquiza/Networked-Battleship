@@ -76,15 +76,14 @@ public class UserOceanGrid
 		GridLayout oceanGrid = new GridLayout(10,10,0,0);
 		oceanPanel = new JPanel(oceanGrid);
 		oceanButtons = new Coordinates[10][10];
-		ImageIcon ocean = new ImageIcon( "/batt101.gif" );
 		
 		for(int x = 0; x < 10; x++)
 		{
 			for(int y = 0; y < 10; y++)
 			{
-				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y/*ocean*/);
+				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
-				//oceanButtons[x][y].setText(Integer.toString(x));
+				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt101.gif")));
 				oceanPanel.add(oceanButtons[x][y]);
 			}
 		}
