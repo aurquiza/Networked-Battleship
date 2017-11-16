@@ -5,9 +5,13 @@ public class Client
 {
 	private Gui gui;
 	private Socket clientSocket;
-	private PrintWriter out;
-	private BufferedReader in;
-	private BufferedReader stdIn;
+
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
+
+	private Coordinates recievedCoord;
+
+	private boolean endGame = false;
 	
 	public Client(Gui gui)
 	{
@@ -31,7 +35,6 @@ public class Client
 		{
 			out.close();
 			in.close();
-			stdIn.close();
 			clientSocket.close();
 		}
 		catch(IOException e)
@@ -40,20 +43,23 @@ public class Client
 		}
 	}
 
+	public void sendData(Coordinates c) throws IOException
+	{
+		out.writeObject(c);
+		out.flush();
+	}
+
 	private boolean LookForServer()
 	{
 		try
 		{
 			System.out.println("creating socket..");
 			clientSocket = new Socket("127.0.0.1", 10008);
-			
-			System.out.println("creating in and out pipes...");
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream() ) );
-			
-			System.out.println("Creating standard input pipe");
-			stdIn = new BufferedReader(new InputStreamReader( System.in ) );
-			
+			System.out.println("Success!");
+
+
+			out = new ObjectOutputStream(clientSocket.getOutputStream());
+			in = new ObjectInputStream(clientSocket.getInputStream());
 		}
 		catch(UnknownHostException e)
 		{
@@ -78,20 +84,19 @@ private class ReadingInput implements Runnable
 	}
 	public void run()
 	{
+		System.out.println("Waiting for Input..");
 		try
 		{
-			String userInput;
-			while((userInput = stdIn.readLine()) != null)
+
+			while(!endGame)
 			{
-				System.out.println("Client: " + userInput);
-				out.println(userInput);
-				if(userInput.equals("Close Socket"))
-					break;
+				recievedCoord = (Coordinates) in.readObject();
+				System.out.println("Client: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
 			}
 		}
-		catch(IOException e)
+		catch(Exception ex)
 		{
-			System.err.println("Error: unable to read input from client");
+			System.err.println("Problem reading object");
 		}
 	}
 } // end of Reading Input class

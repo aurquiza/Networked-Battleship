@@ -69,6 +69,11 @@ public class Gui extends JFrame
 		setSize(1280,720);
 		setVisible(true);
 	}
+
+	public EnemyOceanGrid getEnemyGrid()
+	{
+		return player2;
+	}
 	
 	public void organizeUserGrid()
 	{

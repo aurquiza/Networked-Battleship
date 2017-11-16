@@ -109,11 +109,15 @@ public class Menus extends JFrame
 					{
 						/* create server */
 						server = new Server(gui);
+						EnemyOceanGrid e = gui.getEnemyGrid();
+						e.setServer(server);
 					}
 					else 
 					{
 						/* look for a connection */
 						client = new Client(gui);
+						EnemyOceanGrid e = gui.getEnemyGrid();
+						e.setClient(client);
 					}
 				}
 			}
