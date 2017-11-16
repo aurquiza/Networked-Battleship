@@ -5,6 +5,8 @@ import java.util.Vector;
 
 public class UserOceanGrid
 {
+	private Gui gui;
+
 	private JPanel oceanPanel;
 	private JPanel numberPanel;
 	private JPanel letterPanel;
@@ -26,13 +28,15 @@ public class UserOceanGrid
 
 	private Vector<Ship> allShips;
 	
-	public UserOceanGrid()
+	public UserOceanGrid(Gui gui)
 	{
 		oceanPanel = null;
 		numberPanel = null;
 		letterPanel = null;
 		allShips = new Vector<Ship>(1);
 		
+		this.gui = gui;
+
 		createOceanGrid();
 		createNumberPanel();
 		createLetterPanel();
@@ -57,46 +61,33 @@ public class UserOceanGrid
 		return letterPanel;
 	}
 
-	// returns Carrier button
-	public JButton getCarrier()
+	public JButton[] getShipButtons()
 	{
-		return carrier;
+		JButton arr[] = new JButton[7];
+		arr[0] = carrier;
+		arr[1] = battleship;
+		arr[2] = destroyer;
+		arr[3] = submarine;
+		arr[4] = patrolBoat;
+		arr[5] = vertical;
+		arr[6] = horizontal;
+
+		return arr;
 	}
 
-	// returns battleship button
-	public JButton getBattleship()
+	public boolean isHit(Coordinates shot)
 	{
-		return battleship;
-	}
+		if(oceanButtons[shot.getCoordX()][shot.getCoordY()].getOccupation())
+		{
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(new ImageIcon("batt202.gif"));
+			return true;
+		}
+		else
+		{
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(new ImageIcon("batt102.gif"));
+		}
 
-	// returns destroyer button
-	public JButton getDestroyer()
-	{
-		return destroyer;
-	}
-
-	// returns submarine button
-	public JButton getSubmarine()
-	{
-		return submarine;
-	}
-
-	// returns patrol boat button
-	public JButton getPatrolBoat()
-	{
-		return patrolBoat;
-	}
-
-	// returns vertical button
-	public JButton getVerticalB()
-	{
-		return vertical;
-	}
-
-	// returns horizontal button
-	public JButton getHorizontalB()
-	{
-		return horizontal;
+		return false;
 	}
 
 	private void createShipButtons()
@@ -273,8 +264,15 @@ private class OceanGridEvent implements ActionListener
 			default:
 				break;
 		}
-		
-		System.out.println("The size of the vector: " + allShips.size());
+		if(allShips.size() == 5)
+		{
+			gui.setSelfStatus(true);
+			gui.sendDoneStatus();
+			if(gui.getEnemyStatus())
+			{
+				gui.enableEnemyButtons();
+			}
+		}
 	}
 
 } // end of OceanGridEvent class

@@ -7,6 +7,8 @@ import javax.swing.ImageIcon;
 
 public class EnemyOceanGrid
 {
+	private Gui gui;
+
 	private JPanel oceanPanel;
 	private JPanel numberPanel;
 	private JPanel letterPanel;
@@ -18,9 +20,11 @@ public class EnemyOceanGrid
 	private Server server;
 	private Client client;
 	private boolean isSever = false;
+	private int round = 1;
 	
-	public EnemyOceanGrid()
+	public EnemyOceanGrid(Gui gui)
 	{
+		this.gui = gui;
 		oceanPanel = null;
 		numberPanel = null;
 		letterPanel = null;
@@ -139,14 +143,25 @@ public class EnemyOceanGrid
 			try
 			{
 				if(isSever)
+				{
+
 					server.sendData(buttonClicked);
+				}
 				else
+				{
 					client.sendData(buttonClicked);
+				}
+
+				// if(gui.confirmShot(buttonClicked))
+				// 	buttonClicked.setIcon(new ImageIcon("batt103.gif"));
+				// else
+				// 	buttonClicked.setIcon(new ImageIcon("batt102.gif"));
 			}
 			catch(IOException e)
 			{
 				System.err.println("Attempt to send object failed!!");
 			}
+
 
 		}
 	}

@@ -2,6 +2,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -49,6 +50,24 @@ public class Menus extends JFrame
 		addFileMenuItems();
 		addHelpMenuItems();
 		addConnectMenuItems();
+	}
+
+	public void sendCompleteStatus()
+	{
+
+		try
+		{
+			Coordinates doneButton = new Coordinates("done", -1 , -1);
+			if(isServer)
+				server.sendData(doneButton);
+			else
+				client.sendData(doneButton);
+		}
+		catch(IOException e)
+		{
+			System.err.println("Attempt to send object failed!!");
+		}
+		
 	}
 	
 	

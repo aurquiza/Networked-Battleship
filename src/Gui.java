@@ -30,10 +30,15 @@ public class Gui extends JFrame
 	
 	private Menus menus;
 	
+	// instances related to the ocean grids where player will shoot and place boats
 	private UserOceanGrid player1;
 	private EnemyOceanGrid player2;
+
+	// instances related to the status label
 	private JLabel statusLabel;
-	
+	private boolean selfDone = false;
+	private boolean enemyDone = false; 
+
 	public Gui()
 	{
 		super("CS 342 Project 4 (Networked-Battleship)");
@@ -47,8 +52,8 @@ public class Gui extends JFrame
 		createStatusBar();
 
 		// initialize the grids where the user will place ships and shoot at the enemy
-		player1 = new UserOceanGrid();
-		player2 = new EnemyOceanGrid();
+		player1 = new UserOceanGrid(this);
+		player2 = new EnemyOceanGrid(this);
 		organizeUserGrid();
 		organizeEnemyGrid();
 		
@@ -89,6 +94,11 @@ public class Gui extends JFrame
 		//player2.enableButtons();
 	}
 
+	public void enableEnemyButtons()
+	{
+		player2.enableButtons();
+	}
+
 	public void disableOceanButtons()
 	{
 		player1.disableButtons();
@@ -99,6 +109,37 @@ public class Gui extends JFrame
 	{
 		statusLabel.setText(text);
 	}
+
+	public void setSelfStatus(boolean b)
+	{
+		selfDone = b;
+	}
+
+	public void sendDoneStatus()
+	{
+		menus.sendCompleteStatus();
+	}
+
+	public void enemyDoneStatus(boolean b)
+	{
+		enemyDone = b;
+	}
+
+	public boolean getSelfStatus()
+	{
+		return selfDone;
+	}
+
+	public boolean getEnemyStatus()
+	{
+		return enemyDone;
+	}
+
+	public boolean checkShot(Coordinates shot)
+	{
+		return player1.isHit(shot);
+	}
+
 	
 	private void organizeUserGrid()
 	{
@@ -148,13 +189,10 @@ public class Gui extends JFrame
 		availableShips = new JPanel();
 		availableShips.setLayout(new BoxLayout(availableShips, BoxLayout.Y_AXIS));
 
-		availableShips.add(player1.getCarrier());
-		availableShips.add(player1.getBattleship());
-		availableShips.add(player1.getDestroyer());
-		availableShips.add(player1.getSubmarine());
-		availableShips.add(player1.getPatrolBoat());
-		availableShips.add(player1.getVerticalB());
-		availableShips.add(player1.getHorizontalB());
+		JButton arr[] = player1.getShipButtons();
+
+		for(int i = 0; i < 7; i++)
+			availableShips.add(arr[i]);
 	}
 
 }

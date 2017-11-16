@@ -48,7 +48,7 @@ public class Server
 		}
 		catch(IOException e)
 		{
-			System.err.println("Unable to client socket");
+			System.err.println("Unable to close client socket!");
 		}
 
 
@@ -61,7 +61,7 @@ public class Server
 		}
 		catch(IOException e)
 		{
-			System.err.println("Unable to close port!!");
+			System.err.println("Unable to close server socket!");
 		}
 	}
 
@@ -123,6 +123,32 @@ private class CommunicationThread implements Runnable
 			{
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Server: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
+
+				// if(gui.checkShot(recievedCoord))
+				// {
+				// 	out.writeObject(new Coordinates(" ", -2, -2));
+				// 	out.flush();
+				// }
+				// else
+				// {
+				// 	out.writeObject(new Coordinates(" ", -3, -3));
+				// 	out.flush();
+				// }
+
+
+				if(recievedCoord.getCoordX() == -1 && recievedCoord.getCoordY() == -1)
+				{
+					gui.enemyDoneStatus(true);
+					if(gui.getSelfStatus())
+					{
+						gui.enableEnemyButtons();
+					}
+					gui.changeStatus("Status: Server begins first");
+				}
+				else if(recievedCoord.getCoordX() == -2 && recievedCoord.getCoordY() == -2)
+				{
+
+				}
 			}
 			
 			System.out.println("Closing client socket...");
