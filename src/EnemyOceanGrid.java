@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
 
 import javax.swing.ImageIcon;
 
@@ -13,6 +14,10 @@ public class EnemyOceanGrid
 	private Coordinates oceanButtons[][];
 	private JButton letterButtons[];
 	private JButton numberButtons[];
+
+	private Server server;
+	private Client client;
+	private boolean isSever = false;
 	
 	public EnemyOceanGrid()
 	{
@@ -20,6 +25,9 @@ public class EnemyOceanGrid
 		numberPanel = null;
 		letterPanel = null;
 		oceanButtons = null;
+
+		server = null;
+		client = null;
 		
 		createOceanGrid();
 		createNumberPanel();
@@ -39,6 +47,20 @@ public class EnemyOceanGrid
 	public JPanel getLetterPanel()
 	{
 		return letterPanel;
+	}
+
+	// set server to valid object
+	public void setServer(Server s)
+	{
+		server = s;
+		isSever = true;
+	}
+
+	// set client to valid object
+	public void setClient(Client c)
+	{
+		client = c;
+		isSever = false;
 	}
 	
 	private void createLetterPanel()
@@ -83,10 +105,33 @@ public class EnemyOceanGrid
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
 				oceanButtons[x][y].setIcon(new ImageIcon("batt101.gif"));
-				
+				oceanButtons[x][y].addActionListener(new buttonAction());
+
 				oceanPanel.add(oceanButtons[x][y]);
+
 			}
 		}
 		
+	}
+
+	private class buttonAction implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event)
+		{
+			Coordinates buttonClicked = (Coordinates) event.getSource();
+
+			try
+			{
+				if(isSever)
+					server.sendData(buttonClicked);
+				else
+					client.sendData(buttonClicked);
+			}
+			catch(IOException e)
+			{
+				System.err.println("Attempt to send object failed!!");
+			}
+
+		}
 	}
 }

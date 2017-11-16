@@ -62,10 +62,6 @@ public class UserOceanGrid
 		{
 			numberButtons[i] = new JButton(Integer.toString(i + 1));
 			numberButtons[i].setPreferredSize(new Dimension(50,50));
-
-			//numberButtons[i].setBackground(Color.);
-			//numberButtons[i].setForeground(Color.GREEN);
-
 			numberPanel.add(numberButtons[i]);
 		}
 	}

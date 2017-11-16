@@ -6,6 +6,13 @@ public class Server
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 	private Gui gui;
+
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
+
+	private Coordinates recievedCoord;
+
+	private boolean endGame = false;
 	
 	public Server(Gui gui)
 	{
@@ -19,6 +26,20 @@ public class Server
 	
 	public void closeServer()
 	{
+		// close client if not already closed
+		// Note: may cause some error
+		try
+		{
+			out.close();
+			in.close();
+			clientSocket.close();
+		}
+		catch(IOException e)
+		{
+			System.err.println("Unable to client socket");
+		}
+
+
 		System.out.println("closing server...");
 		// this might break something...
 		try
@@ -30,7 +51,13 @@ public class Server
 			System.err.println("Unable to close port!!");
 		}
 	}
-	
+
+
+	public void sendData(Coordinates c) throws IOException
+	{
+		out.writeObject(c);
+		out.flush();
+	}
 	
 	
 private class ConnectionThread implements Runnable
@@ -73,22 +100,18 @@ private class CommunicationThread implements Runnable
 	
 	public void run()
 	{
+		System.out.print("Connection with client found!!");
+		System.out.print("Waiting for input...");
+
 		try 
 		{
-			PrintWriter out = new PrintWriter( clientSocket.getOutputStream(), true );
-			BufferedReader in = new BufferedReader( new InputStreamReader( clientSocket.getInputStream() ) );
+			out = new ObjectOutputStream(clientSocket.getOutputStream());
+			in = new ObjectInputStream(clientSocket.getInputStream());
 			
-			String inputLine;
-			
-			System.out.print("Connection with client found!!");
-			while((inputLine = in.readLine()) != null)
+			while(!endGame)
 			{
-				System.out.println("Server: " + inputLine);
-				out.println("server recieved message!");
-				
-				if(inputLine.equals("Close Socket"))
-					break;
-					
+				recievedCoord = (Coordinates) in.readObject();
+				System.out.println("Server: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
 			}
 			
 			System.out.println("Closing client socket...");
@@ -96,9 +119,9 @@ private class CommunicationThread implements Runnable
 			in.close();
 			clientSocket.close();
 		}
-		catch(IOException e)
+		catch(Exception ex)
 		{
-			System.err.println("Problem with Communication Server");
+			System.err.println("Problem reading object");
 		}
 		
 		
