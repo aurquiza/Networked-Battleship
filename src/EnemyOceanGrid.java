@@ -50,7 +50,7 @@ public class EnemyOceanGrid
 		for(int i = 0; i < 10; i++)
 		{
 			letterButtons[i] = new JButton(Character.toString((char)(65 + i)));
-			letterButtons[i].setPreferredSize(new Dimension(50,50));
+			letterButtons[i].setPreferredSize(new Dimension(70,70));
 			letterButtons[i].setBackground(Color.black);
 			letterButtons[i].setForeground(Color.white);
 			letterPanel.add(letterButtons[i]);
@@ -66,7 +66,7 @@ public class EnemyOceanGrid
 		for(int i = 0; i < 10; i++)
 		{
 			numberButtons[i] = new JButton(Integer.toString(i));
-			numberButtons[i].setPreferredSize(new Dimension(50,50));
+			numberButtons[i].setPreferredSize(new Dimension(70,70));
 			numberButtons[i].setBackground(Color.black);
 			numberButtons[i].setForeground(Color.white);
 			numberPanel.add(numberButtons[i]);
@@ -84,9 +84,9 @@ public class EnemyOceanGrid
 		{
 			for(int y = 0; y < 10; y++)
 			{
-				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
-				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
-				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt101.gif")));				
+				oceanButtons[x][y] = new Coordinates(x, y);
+				oceanButtons[x][y].setPreferredSize(new Dimension(70,70));
+				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt100.gif")));				
 				oceanPanel.add(oceanButtons[x][y]);
 			}
 		}

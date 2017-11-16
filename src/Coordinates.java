@@ -7,9 +7,8 @@ public class Coordinates extends JButton
 	private int X;
 	private int Y;
 	
-	public Coordinates(String s,int x, int y)
+	public Coordinates(int x, int y)
 	{
-		super(s);
 		X = x;
 		Y = y;
 	}
