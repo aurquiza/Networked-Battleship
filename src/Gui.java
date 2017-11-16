@@ -26,6 +26,7 @@ public class Gui extends JFrame
 	private JPanel userShipsInterface;
 	private JPanel enemyShipsInterface;
 	private JPanel statusBar;
+	private JPanel availableShips;
 	
 	private Menus menus;
 	
@@ -42,19 +43,16 @@ public class Gui extends JFrame
 		masterPanel = new JPanel(new BorderLayout());
 		userShipsInterface = new JPanel(new GridBagLayout());
 		enemyShipsInterface = new JPanel(new GridBagLayout());
+		
+		createStatusBar();
 
-		statusBar = new JPanel(new BorderLayout());
-		statusLabel = new JLabel("Status: Connect to server or become server");
-		statusLabel.setFont(new Font("Serif", Font.PLAIN, 24));
-		statusBar.add(statusLabel);
-		statusLabel.setForeground(Color.blue);
-		statusLabel.setBackground(Color.lightGray);
-
+		// initialize the grids where the user will place ships and shoot at the enemy
 		player1 = new UserOceanGrid();
 		player2 = new EnemyOceanGrid();
 		organizeUserGrid();
 		organizeEnemyGrid();
 		
+		createShipsPanel();
 		
 		// add master panel to the content pane to show gui components
 		masterContainer = getContentPane();
@@ -73,6 +71,7 @@ public class Gui extends JFrame
 		masterPanel.add(userShipsInterface, BorderLayout.WEST);
 		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
 		masterPanel.add(statusBar, BorderLayout.SOUTH);
+		masterPanel.add(availableShips, BorderLayout.CENTER);
 		
 		
 		setSize(1280,720);
@@ -132,5 +131,30 @@ public class Gui extends JFrame
 		enemyShipsInterface.add(player2.getNumberPanel(),b);
 	}
 
+	private void createStatusBar()
+	{
+		// create status bar that will update player on state of the game
+		statusBar = new JPanel(new BorderLayout());
+		statusLabel = new JLabel("Status: Connect to server or become server");
+		statusLabel.setFont(new Font("Serif", Font.PLAIN, 24));
+		statusBar.add(statusLabel);
+		statusLabel.setForeground(Color.blue);
+		statusLabel.setBackground(Color.lightGray);
+	}
+
+
+	private void createShipsPanel()
+	{
+		availableShips = new JPanel();
+		availableShips.setLayout(new BoxLayout(availableShips, BoxLayout.Y_AXIS));
+
+		availableShips.add(player1.getCarrier());
+		availableShips.add(player1.getBattleship());
+		availableShips.add(player1.getDestroyer());
+		availableShips.add(player1.getSubmarine());
+		availableShips.add(player1.getPatrolBoat());
+		availableShips.add(player1.getVerticalB());
+		availableShips.add(player1.getHorizontalB());
+	}
 
 }
