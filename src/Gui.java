@@ -139,8 +139,7 @@ public class Gui extends JFrame
 	{
 		return player1.isHit(shot);
 	}
-
-	
+ 
 	private void organizeUserGrid()
 	{
 		GridBagConstraints c = new GridBagConstraints();

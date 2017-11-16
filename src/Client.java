@@ -101,18 +101,7 @@ private class ReadingInput implements Runnable
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Client: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
 
-				// if(gui.checkShot(recievedCoord))
-				// {
-				// 	out.writeObject(new Coordinates(" ", -2, -2));
-				// 	out.flush();
-				// }
-				// else
-				// {
-				// 	out.writeObject(new Coordinates(" ", -3, -3));
-				// 	out.flush();
-				// }
 
-				
 				if(recievedCoord.getCoordX() == -1 && recievedCoord.getCoordY() == -1)
 				{
 					gui.enemyDoneStatus(true);
@@ -121,6 +110,10 @@ private class ReadingInput implements Runnable
 						gui.enableEnemyButtons();
 					}
 					gui.changeStatus("Status: Server begins first");
+				}
+				else
+				{
+					gui.checkShot(recievedCoord);
 				}
 			}
 		}

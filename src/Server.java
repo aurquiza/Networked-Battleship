@@ -124,6 +124,7 @@ private class CommunicationThread implements Runnable
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Server: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
 
+				
 				// if(gui.checkShot(recievedCoord))
 				// {
 				// 	out.writeObject(new Coordinates(" ", -2, -2));
@@ -148,6 +149,10 @@ private class CommunicationThread implements Runnable
 				else if(recievedCoord.getCoordX() == -2 && recievedCoord.getCoordY() == -2)
 				{
 
+				}
+				else
+				{
+					gui.checkShot(recievedCoord);
 				}
 			}
 			
