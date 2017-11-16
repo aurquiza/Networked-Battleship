@@ -12,6 +12,7 @@ public class Client
 	private Coordinates recievedCoord;
 
 	private boolean endGame = false;
+	private boolean connectionMade = false;
 	
 	public Client(Gui gui)
 	{
@@ -20,6 +21,8 @@ public class Client
 		if(LookForServer())
 		{
 			System.out.println("Server found!");
+			connectionMade = true;
+			gui.changeStatus("Status: Connection Found! place ships on grid");
 			new ReadingInput();
 		}
 		else
@@ -47,6 +50,11 @@ public class Client
 	{
 		out.writeObject(c);
 		out.flush();
+	}
+
+	public boolean isClientConnected()
+	{
+		return connectionMade;
 	}
 
 	private boolean LookForServer()
@@ -92,6 +100,11 @@ private class ReadingInput implements Runnable
 			{
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Client: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
+				
+				if(recievedCoord.getCoordX() == -1 && recievedCoord.getCoordY() == -1)
+				{
+					gui.changeStatus("Status: Server begins first");
+				}
 			}
 		}
 		catch(Exception ex)

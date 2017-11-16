@@ -31,6 +31,7 @@ public class Gui extends JFrame
 	
 	private UserOceanGrid player1;
 	private EnemyOceanGrid player2;
+	private JLabel statusLabel;
 	
 	public Gui()
 	{
@@ -41,7 +42,14 @@ public class Gui extends JFrame
 		masterPanel = new JPanel(new BorderLayout());
 		userShipsInterface = new JPanel(new GridBagLayout());
 		enemyShipsInterface = new JPanel(new GridBagLayout());
-		
+
+		statusBar = new JPanel(new BorderLayout());
+		statusLabel = new JLabel("Status: Connect to server or become server");
+		statusLabel.setFont(new Font("Serif", Font.PLAIN, 24));
+		statusBar.add(statusLabel);
+		statusLabel.setForeground(Color.blue);
+		statusLabel.setBackground(Color.lightGray);
+
 		player1 = new UserOceanGrid();
 		player2 = new EnemyOceanGrid();
 		organizeUserGrid();
@@ -64,6 +72,7 @@ public class Gui extends JFrame
 		
 		masterPanel.add(userShipsInterface, BorderLayout.WEST);
 		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
+		masterPanel.add(statusBar, BorderLayout.SOUTH);
 		
 		
 		setSize(1280,720);
@@ -74,11 +83,27 @@ public class Gui extends JFrame
 	{
 		return player2;
 	}
+
+	public void enableOceanButtons()
+	{
+		player1.enableButtons();
+		//player2.enableButtons();
+	}
+
+	public void disableOceanButtons()
+	{
+		player1.disableButtons();
+		player2.disableButtons();
+	}
+
+	public void changeStatus(String text)
+	{
+		statusLabel.setText(text);
+	}
 	
-	public void organizeUserGrid()
+	private void organizeUserGrid()
 	{
 		GridBagConstraints c = new GridBagConstraints();
-		
 		
 		c.gridx = 1;
 		c.gridy = 0;
@@ -91,7 +116,7 @@ public class Gui extends JFrame
 		userShipsInterface.add(player1.getNumberPanel(),c);
 	}
 	
-	public void organizeEnemyGrid()
+	private void organizeEnemyGrid()
 	{
 		GridBagConstraints b = new GridBagConstraints();
 		

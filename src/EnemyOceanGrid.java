@@ -62,6 +62,20 @@ public class EnemyOceanGrid
 		client = c;
 		isSever = false;
 	}
+
+	public void enableButtons()
+	{
+		for(int x = 0; x < 10; x++)
+			for(int y = 0; y < 10; y++)
+				oceanButtons[x][y].setEnabled(true);
+	}
+
+	public void disableButtons()
+	{
+		for(int x = 0; x < 10; x++)
+			for(int y = 0; y < 10; y++)
+				oceanButtons[x][y].setEnabled(false);
+	}
 	
 	private void createLetterPanel()
 	{
@@ -105,6 +119,8 @@ public class EnemyOceanGrid
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
 				oceanButtons[x][y].setIcon(new ImageIcon("batt101.gif"));
+				oceanButtons[x][y].setEnabled(false);
+
 				oceanButtons[x][y].addActionListener(new buttonAction());
 
 				oceanPanel.add(oceanButtons[x][y]);

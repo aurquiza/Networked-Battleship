@@ -13,15 +13,23 @@ public class Server
 	private Coordinates recievedCoord;
 
 	private boolean endGame = false;
+	private boolean isServerCreated = false;
 	
 	public Server(Gui gui)
 	{
 		serverSocket = null;
 		clientSocket = null;
+		out = null;
+		in = null;
 		this.gui = gui;
-		
-		System.out.println("Creating Server...");
-		ConnectionThread connect = new ConnectionThread();
+
+		if(createServer())
+		{
+			isServerCreated = true;
+			new CommunicationThread();
+		}
+		else
+			System.err.println("Attempt failed!");
 	}
 	
 	public void closeServer()
@@ -30,9 +38,13 @@ public class Server
 		// Note: may cause some error
 		try
 		{
-			out.close();
-			in.close();
-			clientSocket.close();
+			if(out != null || in != null || clientSocket != null)
+			{
+				out.close();
+				in.close();
+				clientSocket.close();
+			} 
+
 		}
 		catch(IOException e)
 		{
@@ -44,7 +56,8 @@ public class Server
 		// this might break something...
 		try
 		{
-			serverSocket.close();
+			if(serverSocket != null)
+				serverSocket.close();
 		}
 		catch(IOException e)
 		{
@@ -58,37 +71,30 @@ public class Server
 		out.writeObject(c);
 		out.flush();
 	}
-	
-	
-private class ConnectionThread implements Runnable
-{
-	public ConnectionThread()
+
+	public boolean serverCreated()
 	{
-		new Thread(this).start();
+		return isServerCreated;
 	}
 	
-	public void run()
+	
+	public boolean createServer()
 	{
-		System.out.println("Looking for client...");
+		System.out.println("Attempting to create server...");
 		
 		try
 		{
 			serverSocket = new ServerSocket(10008);
-			clientSocket = serverSocket.accept();
-			
-			new CommunicationThread();
-			
+			System.out.println("Server Created!");
 		}
 		catch (IOException e)
-		{
-			System.err.println("One of the errors occured: ");
-			System.err.println("could not listen on port: 10007.");
-			System.err.println("Accept Failed");
+		{	
+			System.err.println("could not listen on port: 10008.");
+			return false;
 		}
-		
-	}
-		
-} // end of ConnectionThread Class
+
+		return true;
+	}	
 
 
 private class CommunicationThread implements Runnable
@@ -100,11 +106,16 @@ private class CommunicationThread implements Runnable
 	
 	public void run()
 	{
-		System.out.print("Connection with client found!!");
-		System.out.print("Waiting for input...");
+		System.out.println("Searching for client connection...");
 
 		try 
 		{
+			clientSocket = serverSocket.accept();
+			System.out.println("Connection with client found!!");
+			System.out.println("Waiting for input...");
+			gui.changeStatus("Status: Connection Found! place ships on grid");
+			gui.enableOceanButtons();
+
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 			
@@ -118,6 +129,10 @@ private class CommunicationThread implements Runnable
 			out.close();
 			in.close();
 			clientSocket.close();
+		}
+		catch(IOException e )
+		{
+			System.err.println("Accept Failed!");
 		}
 		catch(Exception ex)
 		{

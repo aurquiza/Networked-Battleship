@@ -105,12 +105,21 @@ public class Menus extends JFrame
 			{
 				public void actionPerformed(ActionEvent event)
 				{
+					disconnect.setEnabled(true);
 					if(isServer)
 					{
 						/* create server */
 						server = new Server(gui);
 						EnemyOceanGrid e = gui.getEnemyGrid();
 						e.setServer(server);
+
+						if(!server.serverCreated())
+							disconnect.setEnabled(false);
+						else
+						{
+							serverOrClientItem.setEnabled(false);
+							gui.changeStatus("Status: Server is waiting for client");
+						}
 					}
 					else 
 					{
@@ -118,12 +127,21 @@ public class Menus extends JFrame
 						client = new Client(gui);
 						EnemyOceanGrid e = gui.getEnemyGrid();
 						e.setClient(client);
+
+						if(!client.isClientConnected())
+							disconnect.setEnabled(false);
+						else
+						{
+							serverOrClientItem.setEnabled(false);
+							gui.enableOceanButtons();
+						}
 					}
 				}
 			}
 		);
 		
 		disconnect = new JMenuItem("disconnect from server");
+		disconnect.setEnabled(false);
 		connectMenu.add(disconnect);
 		disconnect.addActionListener
 		(
@@ -131,6 +149,10 @@ public class Menus extends JFrame
 			{
 				public void actionPerformed(ActionEvent event)
 				{
+					disconnect.setEnabled(false);
+					serverOrClientItem.setEnabled(true);
+					gui.disableOceanButtons();
+					gui.changeStatus("Status: Connect to server or become server");
 					if(!isServer)
 					{
 						client.closeClient();
