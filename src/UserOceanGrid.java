@@ -79,12 +79,16 @@ public class UserOceanGrid
 	{
 		if(oceanButtons[shot.getCoordX()][shot.getCoordY()].getOccupation())
 		{
-			oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(new ImageIcon("batt202.gif"));
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(new ImageIcon( getClass().getResource("batt202.gif")));
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setDisabledIcon(new ImageIcon( getClass().getResource("batt202.gif")));
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setEnabled(false);
 			return true;
 		}
 		else
 		{
-			oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(new ImageIcon("batt102.gif"));
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(new ImageIcon( getClass().getResource("batt102.gif")));
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setDisabledIcon(new ImageIcon( getClass().getResource("batt102.gif")));
+			oceanButtons[shot.getCoordX()][shot.getCoordY()].setEnabled(false);
 		}
 
 		return false;
@@ -183,7 +187,8 @@ public class UserOceanGrid
 			{
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
-				oceanButtons[x][y].setIcon(new ImageIcon("batt101.gif"));
+				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt101.gif")));
+				oceanButtons[x][y].setDisabledIcon(new ImageIcon( getClass().getResource("batt101.gif")));
 				oceanButtons[x][y].setEnabled(false);
 
 				oceanButtons[x][y].addActionListener(new OceanGridEvent());

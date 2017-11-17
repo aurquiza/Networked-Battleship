@@ -1,4 +1,15 @@
-
+/*
+ * CS 342 Programming Project 4: Networked-Battleship
+ * 
+ * Names: Alexis Urquiza, Robert Barrera, Muhammad Arsalan Chaudry
+ * NetID: aurqui7, rbarre4, mchaud25
+ * 
+ * - This program is a gui simulation of the game Battleship, where two players can go against each other and attempt
+ *   to sink the other player's fleet. The first player to sink the other player's fleet wins.
+ * 
+ * - This is the Menus class that will create the server and client as well as other menus and menu items
+     it also manages which program will be the server or the client
+ */
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -40,6 +51,7 @@ public class Menus extends JFrame
 	private final File HOWTOPLAY = new File("src/howToPlay.html"); 			//Help: how to play file
 	private final File HOWTOCONNECT = new File("src/howToConnect.html"); 	//Help: how to connect file
 	
+	// constructor
 	public Menus(Gui gui)
 	{
 		this.gui = gui;
@@ -52,10 +64,13 @@ public class Menus extends JFrame
 		addConnectMenuItems();
 	}
 
+	// method that will send a 'complete' status to the server or client
+	// meaning that the actual game can begin after placing the ships
 	public void sendCompleteStatus()
 	{
 		try
 		{
+			// send validation to server or client 
 			Coordinates doneButton = new Coordinates("done", -1 , -1);
 			if(isServer)
 				server.sendData(doneButton);
@@ -68,9 +83,10 @@ public class Menus extends JFrame
 		}
 	}
 	
-	
+	// method that adds file menu items to the file menu
 	private void addFileMenuItems()
 	{
+		// about message
         aboutItem = new JMenuItem("About");
         fetch(aboutItem, ABOUTFILE);
         fileMenu.add(aboutItem);
@@ -122,6 +138,7 @@ public class Menus extends JFrame
 			{
 				public void actionPerformed(ActionEvent event)
 				{
+					// disconnect button is enabled 
 					disconnect.setEnabled(true);
 					if(isServer)
 					{
@@ -157,6 +174,7 @@ public class Menus extends JFrame
 			}
 		);
 		
+		//  create button action listener for disconnect
 		disconnect = new JMenuItem("disconnect from server");
 		disconnect.setEnabled(false);
 		connectMenu.add(disconnect);
@@ -166,6 +184,7 @@ public class Menus extends JFrame
 			{
 				public void actionPerformed(ActionEvent event)
 				{
+					// disable disconnect button
 					disconnect.setEnabled(false);
 					serverOrClientItem.setEnabled(true);
 					gui.disableOceanButtons();
@@ -194,17 +213,19 @@ public class Menus extends JFrame
 		helpMenu.add(helpConnectItem);
 	}
 	
-	
+	// returns file menu
 	public JMenu getFileMenu()
 	{
 		return fileMenu;
 	}
 	
+	// returns connect menu
 	public JMenu getConnectMenu()
 	{
 		return connectMenu;
 	}
 	
+	// returns help menu
 	public JMenu getHelpMenu()
 	{
 		return helpMenu;

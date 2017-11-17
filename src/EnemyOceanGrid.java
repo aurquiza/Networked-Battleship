@@ -84,6 +84,8 @@ public class EnemyOceanGrid
 	public void setButtonImage(Coordinates shot, ImageIcon i)
 	{
 		oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(i);
+		oceanButtons[shot.getCoordX()][shot.getCoordY()].setDisabledIcon(i);
+		oceanButtons[shot.getCoordX()][shot.getCoordY()].setEnabled(false);
 	}
 	
 	private void createLetterPanel()
@@ -127,7 +129,8 @@ public class EnemyOceanGrid
 			{
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
-				oceanButtons[x][y].setIcon(new ImageIcon("batt101.gif"));
+				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt101.gif")));
+				oceanButtons[x][y].setDisabledIcon(new ImageIcon( getClass().getResource("batt101.gif")));
 				oceanButtons[x][y].setEnabled(false);
 
 				oceanButtons[x][y].addActionListener(new buttonAction());
@@ -156,11 +159,7 @@ public class EnemyOceanGrid
 				{
 					client.sendData(buttonClicked);
 				}
-
-				// if(gui.confirmShot(buttonClicked))
-				// 	buttonClicked.setIcon(new ImageIcon("batt103.gif"));
-				// else
-				// 	buttonClicked.setIcon(new ImageIcon("batt102.gif"));
+				
 			}
 			catch(IOException e)
 			{
