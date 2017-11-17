@@ -187,8 +187,8 @@ public class UserOceanGrid
 			{
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
-				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt100.gif")));
-				oceanButtons[x][y].setDisabledIcon(new ImageIcon( getClass().getResource("batt100.gif")));
+				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt101.gif")));
+				oceanButtons[x][y].setDisabledIcon(new ImageIcon( getClass().getResource("batt101.gif")));
 				oceanButtons[x][y].setEnabled(false);
 
 				oceanButtons[x][y].addActionListener(new OceanGridEvent());
