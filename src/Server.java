@@ -140,12 +140,12 @@ private class CommunicationThread implements Runnable
 				// validation check, this means that the shot was a hit
 				else if(recievedCoord.getText().equals("y"))
 				{
-					gui.updateAttackBoard(recievedCoord, new ImageIcon("batt103.gif"));
+					gui.updateAttackBoard(recievedCoord, new ImageIcon( getClass().getResource("batt103.gif")));
 				}
 				// validation check, this means that the shot was a miss
 				else if(recievedCoord.getText().equals("n"))
 				{
-					gui.updateAttackBoard(recievedCoord, new ImageIcon("batt102.gif"));
+					gui.updateAttackBoard(recievedCoord, new ImageIcon( getClass().getResource("batt102.gif")));
 				}
 				else
 				{
