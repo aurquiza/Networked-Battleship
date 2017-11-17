@@ -54,7 +54,6 @@ public class Menus extends JFrame
 
 	public void sendCompleteStatus()
 	{
-
 		try
 		{
 			Coordinates doneButton = new Coordinates("done", -1 , -1);
@@ -67,7 +66,6 @@ public class Menus extends JFrame
 		{
 			System.err.println("Attempt to send object failed!!");
 		}
-		
 	}
 	
 	

@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import javax.swing.ImageIcon;
 
 public class Server
 {
@@ -11,6 +12,7 @@ public class Server
 	private ObjectInputStream in;
 
 	private Coordinates recievedCoord;
+	private Coordinates validationShot = new Coordinates(" ", -5, -5);
 
 	private boolean endGame = false;
 	private boolean isServerCreated = false;
@@ -124,19 +126,8 @@ private class CommunicationThread implements Runnable
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Server: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
 
-				
-				// if(gui.checkShot(recievedCoord))
-				// {
-				// 	out.writeObject(new Coordinates(" ", -2, -2));
-				// 	out.flush();
-				// }
-				// else
-				// {
-				// 	out.writeObject(new Coordinates(" ", -3, -3));
-				// 	out.flush();
-				// }
 
-
+				// status check to allow player to officially begin game
 				if(recievedCoord.getCoordX() == -1 && recievedCoord.getCoordY() == -1)
 				{
 					gui.enemyDoneStatus(true);
@@ -146,13 +137,26 @@ private class CommunicationThread implements Runnable
 					}
 					gui.changeStatus("Status: Server begins first");
 				}
-				else if(recievedCoord.getCoordX() == -2 && recievedCoord.getCoordY() == -2)
+				// validation check, this means that the shot was a hit
+				else if(recievedCoord.getText().equals("y"))
 				{
-
+					gui.updateAttackBoard(recievedCoord, new ImageIcon("batt103.gif"));
+				}
+				// validation check, this means that the shot was a miss
+				else if(recievedCoord.getText().equals("n"))
+				{
+					gui.updateAttackBoard(recievedCoord, new ImageIcon("batt102.gif"));
 				}
 				else
 				{
-					gui.checkShot(recievedCoord);
+					if(gui.checkShot(recievedCoord))
+						recievedCoord.setText("y");
+					else
+						recievedCoord.setText("n");
+					
+						
+					out.writeObject(recievedCoord);
+					out.flush();
 				}
 			}
 			
@@ -169,7 +173,6 @@ private class CommunicationThread implements Runnable
 		{
 			System.err.println("Problem reading object");
 		}
-		
 		
 	}
 	

@@ -14,6 +14,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.ImageIcon;
 
 public class Gui extends JFrame
 {
@@ -138,6 +139,11 @@ public class Gui extends JFrame
 	public boolean checkShot(Coordinates shot)
 	{
 		return player1.isHit(shot);
+	}
+
+	public void updateAttackBoard(Coordinates shot, ImageIcon icon)
+	{
+		player2.setButtonImage(shot, icon);
 	}
  
 	private void organizeUserGrid()

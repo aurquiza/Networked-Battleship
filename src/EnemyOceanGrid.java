@@ -80,6 +80,11 @@ public class EnemyOceanGrid
 			for(int y = 0; y < 10; y++)
 				oceanButtons[x][y].setEnabled(false);
 	}
+
+	public void setButtonImage(Coordinates shot, ImageIcon i)
+	{
+		oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(i);
+	}
 	
 	private void createLetterPanel()
 	{

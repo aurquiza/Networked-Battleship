@@ -37,4 +37,9 @@ public class Coordinates extends JButton implements Serializable
 	{
 		occupied = b;
 	}
+
+	public void setCoordX(int x)
+	{
+		X = x;
+	}
 }
