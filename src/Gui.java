@@ -74,78 +74,93 @@ public class Gui extends JFrame
 		masterBar.add(menus.getHelpMenu());
 		masterBar.add(menus.getConnectMenu());
 		
+		// adds subpanels to the master panels
 		masterPanel.add(userShipsInterface, BorderLayout.WEST);
 		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
 		masterPanel.add(statusBar, BorderLayout.SOUTH);
 		masterPanel.add(availableShips, BorderLayout.CENTER);
 		
-		
 		setSize(1280,720);
 		setVisible(true);
 	}
 
+	// return enemy ocean grid 
 	public EnemyOceanGrid getEnemyGrid()
 	{
 		return player2;
 	}
 
+	// enables jbuttons for the user ocean grid
 	public void enableOceanButtons()
 	{
 		player1.enableButtons();
-		//player2.enableButtons();
 	}
 
+	// enables jbuttons for the enemy ocean grid
 	public void enableEnemyButtons()
 	{
 		player2.enableButtons();
 	}
 
+	// disbale ocean buttons for both grids
 	public void disableOceanButtons()
 	{
 		player1.disableButtons();
 		player2.disableButtons();
 	}
 
+	// change the status bar
 	public void changeStatus(String text)
 	{
 		statusLabel.setText(text);
 	}
 
+	// updates the status on whether the player has placed all ships on
+	// the board
 	public void setSelfStatus(boolean b)
 	{
 		selfDone = b;
 	}
 
+	// sends a check as an object to the other program letting them know the sender is
+	// done placing the ships
 	public void sendDoneStatus()
 	{
 		menus.sendCompleteStatus();
 	}
 
+	// updates the status on whether the enemy player has placed all ships on
+	// the board
 	public void enemyDoneStatus(boolean b)
 	{
 		enemyDone = b;
 	}
 
+	// gets the status of the player on whether they are done placing ships on the board
 	public boolean getSelfStatus()
 	{
 		return selfDone;
 	}
 
+	// gets the status of the enemy player on whether they are done placing ships on the board
 	public boolean getEnemyStatus()
 	{
 		return enemyDone;
 	}
 
+	// checks if the coordinate validates as a shot
 	public boolean checkShot(Coordinates shot)
 	{
 		return player1.isHit(shot);
 	}
 
+	// updates the attack board with approriate images
 	public void updateAttackBoard(Coordinates shot, ImageIcon icon)
 	{
 		player2.setButtonImage(shot, icon);
 	}
- 
+ 	
+ 	// organizes the layout of the gui for the player grid
 	private void organizeUserGrid()
 	{
 		GridBagConstraints c = new GridBagConstraints();
@@ -160,7 +175,8 @@ public class Gui extends JFrame
 		c.gridy = 1;
 		userShipsInterface.add(player1.getNumberPanel(),c);
 	}
-	
+
+	// organizes the layout of the gui for the enemy player grid
 	private void organizeEnemyGrid()
 	{
 		GridBagConstraints b = new GridBagConstraints();
@@ -177,6 +193,7 @@ public class Gui extends JFrame
 		enemyShipsInterface.add(player2.getNumberPanel(),b);
 	}
 
+	// organizes the layout of the gui for the status bar
 	private void createStatusBar()
 	{
 		// create status bar that will update player on state of the game
@@ -188,7 +205,8 @@ public class Gui extends JFrame
 		statusLabel.setBackground(Color.lightGray);
 	}
 
-
+	// organizes the layout of the gui for the ship buttons where 
+	// the user can choose where to place the ships
 	private void createShipsPanel()
 	{
 		availableShips = new JPanel();

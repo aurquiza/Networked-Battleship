@@ -159,11 +159,7 @@ public class EnemyOceanGrid
 				{
 					client.sendData(buttonClicked);
 				}
-
-				// if(gui.confirmShot(buttonClicked))
-				// 	buttonClicked.setIcon(new ImageIcon("batt103.gif"));
-				// else
-				// 	buttonClicked.setIcon(new ImageIcon("batt102.gif"));
+				
 			}
 			catch(IOException e)
 			{
