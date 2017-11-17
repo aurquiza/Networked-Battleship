@@ -7,6 +7,8 @@ import javax.swing.ImageIcon;
 
 public class EnemyOceanGrid
 {
+	private Gui gui;
+
 	private JPanel oceanPanel;
 	private JPanel numberPanel;
 	private JPanel letterPanel;
@@ -18,9 +20,11 @@ public class EnemyOceanGrid
 	private Server server;
 	private Client client;
 	private boolean isSever = false;
+	private int round = 1;
 	
-	public EnemyOceanGrid()
+	public EnemyOceanGrid(Gui gui)
 	{
+		this.gui = gui;
 		oceanPanel = null;
 		numberPanel = null;
 		letterPanel = null;
@@ -61,6 +65,27 @@ public class EnemyOceanGrid
 	{
 		client = c;
 		isSever = false;
+	}
+
+	public void enableButtons()
+	{
+		for(int x = 0; x < 10; x++)
+			for(int y = 0; y < 10; y++)
+				oceanButtons[x][y].setEnabled(true);
+	}
+
+	public void disableButtons()
+	{
+		for(int x = 0; x < 10; x++)
+			for(int y = 0; y < 10; y++)
+				oceanButtons[x][y].setEnabled(false);
+	}
+
+	public void setButtonImage(Coordinates shot, ImageIcon i)
+	{
+		oceanButtons[shot.getCoordX()][shot.getCoordY()].setIcon(i);
+		oceanButtons[shot.getCoordX()][shot.getCoordY()].setDisabledIcon(i);
+		oceanButtons[shot.getCoordX()][shot.getCoordY()].setEnabled(false);
 	}
 	
 	private void createLetterPanel()
@@ -104,7 +129,10 @@ public class EnemyOceanGrid
 			{
 				oceanButtons[x][y] = new Coordinates(Integer.toString(x), x, y);
 				oceanButtons[x][y].setPreferredSize(new Dimension(50,50));
-				oceanButtons[x][y].setIcon(new ImageIcon("batt101.gif"));
+				oceanButtons[x][y].setIcon(new ImageIcon( getClass().getResource("batt100.gif")));
+				oceanButtons[x][y].setDisabledIcon(new ImageIcon( getClass().getResource("batt100.gif")));
+				oceanButtons[x][y].setEnabled(false);
+
 				oceanButtons[x][y].addActionListener(new buttonAction());
 
 				oceanPanel.add(oceanButtons[x][y]);
@@ -123,14 +151,25 @@ public class EnemyOceanGrid
 			try
 			{
 				if(isSever)
+				{
+
 					server.sendData(buttonClicked);
+				}
 				else
+				{
 					client.sendData(buttonClicked);
+				}
+
+				// if(gui.confirmShot(buttonClicked))
+				// 	buttonClicked.setIcon(new ImageIcon("batt103.gif"));
+				// else
+				// 	buttonClicked.setIcon(new ImageIcon("batt102.gif"));
 			}
 			catch(IOException e)
 			{
 				System.err.println("Attempt to send object failed!!");
 			}
+
 
 		}
 	}

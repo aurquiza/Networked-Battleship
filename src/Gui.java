@@ -14,6 +14,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import javax.swing.ImageIcon;
 
 public class Gui extends JFrame
 {
@@ -26,12 +27,19 @@ public class Gui extends JFrame
 	private JPanel userShipsInterface;
 	private JPanel enemyShipsInterface;
 	private JPanel statusBar;
+	private JPanel availableShips;
 	
 	private Menus menus;
 	
+	// instances related to the ocean grids where player will shoot and place boats
 	private UserOceanGrid player1;
 	private EnemyOceanGrid player2;
-	
+
+	// instances related to the status label
+	private JLabel statusLabel;
+	private boolean selfDone = false;
+	private boolean enemyDone = false; 
+
 	public Gui()
 	{
 		super("CS 342 Project 4 (Networked-Battleship)");
@@ -42,11 +50,15 @@ public class Gui extends JFrame
 		userShipsInterface = new JPanel(new GridBagLayout());
 		enemyShipsInterface = new JPanel(new GridBagLayout());
 		
-		player1 = new UserOceanGrid();
-		player2 = new EnemyOceanGrid();
+		createStatusBar();
+
+		// initialize the grids where the user will place ships and shoot at the enemy
+		player1 = new UserOceanGrid(this);
+		player2 = new EnemyOceanGrid(this);
 		organizeUserGrid();
 		organizeEnemyGrid();
 		
+		createShipsPanel();
 		
 		// add master panel to the content pane to show gui components
 		masterContainer = getContentPane();
@@ -64,6 +76,8 @@ public class Gui extends JFrame
 		
 		masterPanel.add(userShipsInterface, BorderLayout.WEST);
 		masterPanel.add(enemyShipsInterface, BorderLayout.EAST);
+		masterPanel.add(statusBar, BorderLayout.SOUTH);
+		masterPanel.add(availableShips, BorderLayout.CENTER);
 		
 		
 		setSize(1280,720);
@@ -74,11 +88,67 @@ public class Gui extends JFrame
 	{
 		return player2;
 	}
-	
-	public void organizeUserGrid()
+
+	public void enableOceanButtons()
+	{
+		player1.enableButtons();
+		//player2.enableButtons();
+	}
+
+	public void enableEnemyButtons()
+	{
+		player2.enableButtons();
+	}
+
+	public void disableOceanButtons()
+	{
+		player1.disableButtons();
+		player2.disableButtons();
+	}
+
+	public void changeStatus(String text)
+	{
+		statusLabel.setText(text);
+	}
+
+	public void setSelfStatus(boolean b)
+	{
+		selfDone = b;
+	}
+
+	public void sendDoneStatus()
+	{
+		menus.sendCompleteStatus();
+	}
+
+	public void enemyDoneStatus(boolean b)
+	{
+		enemyDone = b;
+	}
+
+	public boolean getSelfStatus()
+	{
+		return selfDone;
+	}
+
+	public boolean getEnemyStatus()
+	{
+		return enemyDone;
+	}
+
+	public boolean checkShot(Coordinates shot)
+	{
+		return player1.isHit(shot);
+	}
+
+	public void updateAttackBoard(Coordinates shot, ImageIcon icon)
+	{
+		player2.setButtonImage(shot, icon);
+	}
+ 
+	private void organizeUserGrid()
 	{
 		GridBagConstraints c = new GridBagConstraints();
-		
 		
 		c.gridx = 1;
 		c.gridy = 0;
@@ -91,7 +161,7 @@ public class Gui extends JFrame
 		userShipsInterface.add(player1.getNumberPanel(),c);
 	}
 	
-	public void organizeEnemyGrid()
+	private void organizeEnemyGrid()
 	{
 		GridBagConstraints b = new GridBagConstraints();
 		
@@ -107,5 +177,27 @@ public class Gui extends JFrame
 		enemyShipsInterface.add(player2.getNumberPanel(),b);
 	}
 
+	private void createStatusBar()
+	{
+		// create status bar that will update player on state of the game
+		statusBar = new JPanel(new BorderLayout());
+		statusLabel = new JLabel("Status: Connect to server or become server");
+		statusLabel.setFont(new Font("Serif", Font.PLAIN, 24));
+		statusBar.add(statusLabel);
+		statusLabel.setForeground(Color.blue);
+		statusLabel.setBackground(Color.lightGray);
+	}
+
+
+	private void createShipsPanel()
+	{
+		availableShips = new JPanel();
+		availableShips.setLayout(new BoxLayout(availableShips, BoxLayout.Y_AXIS));
+
+		JButton arr[] = player1.getShipButtons();
+
+		for(int i = 0; i < 7; i++)
+			availableShips.add(arr[i]);
+	}
 
 }

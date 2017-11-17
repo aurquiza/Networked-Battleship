@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import javax.swing.ImageIcon;
 
 public class Server
 {
@@ -11,17 +12,26 @@ public class Server
 	private ObjectInputStream in;
 
 	private Coordinates recievedCoord;
+	private Coordinates validationShot = new Coordinates(" ", -5, -5);
 
 	private boolean endGame = false;
+	private boolean isServerCreated = false;
 	
 	public Server(Gui gui)
 	{
 		serverSocket = null;
 		clientSocket = null;
+		out = null;
+		in = null;
 		this.gui = gui;
-		
-		System.out.println("Creating Server...");
-		ConnectionThread connect = new ConnectionThread();
+
+		if(createServer())
+		{
+			isServerCreated = true;
+			new CommunicationThread();
+		}
+		else
+			System.err.println("Attempt failed!");
 	}
 	
 	public void closeServer()
@@ -30,13 +40,17 @@ public class Server
 		// Note: may cause some error
 		try
 		{
-			out.close();
-			in.close();
-			clientSocket.close();
+			if(out != null || in != null || clientSocket != null)
+			{
+				out.close();
+				in.close();
+				clientSocket.close();
+			} 
+
 		}
 		catch(IOException e)
 		{
-			System.err.println("Unable to client socket");
+			System.err.println("Unable to close client socket!");
 		}
 
 
@@ -44,11 +58,12 @@ public class Server
 		// this might break something...
 		try
 		{
-			serverSocket.close();
+			if(serverSocket != null)
+				serverSocket.close();
 		}
 		catch(IOException e)
 		{
-			System.err.println("Unable to close port!!");
+			System.err.println("Unable to close server socket!");
 		}
 	}
 
@@ -58,37 +73,30 @@ public class Server
 		out.writeObject(c);
 		out.flush();
 	}
-	
-	
-private class ConnectionThread implements Runnable
-{
-	public ConnectionThread()
+
+	public boolean serverCreated()
 	{
-		new Thread(this).start();
+		return isServerCreated;
 	}
 	
-	public void run()
+	
+	public boolean createServer()
 	{
-		System.out.println("Looking for client...");
+		System.out.println("Attempting to create server...");
 		
 		try
 		{
 			serverSocket = new ServerSocket(10008);
-			clientSocket = serverSocket.accept();
-			
-			new CommunicationThread();
-			
+			System.out.println("Server Created!");
 		}
 		catch (IOException e)
-		{
-			System.err.println("One of the errors occured: ");
-			System.err.println("could not listen on port: 10007.");
-			System.err.println("Accept Failed");
+		{	
+			System.err.println("could not listen on port: 10008.");
+			return false;
 		}
-		
-	}
-		
-} // end of ConnectionThread Class
+
+		return true;
+	}	
 
 
 private class CommunicationThread implements Runnable
@@ -100,11 +108,16 @@ private class CommunicationThread implements Runnable
 	
 	public void run()
 	{
-		System.out.print("Connection with client found!!");
-		System.out.print("Waiting for input...");
+		System.out.println("Searching for client connection...");
 
 		try 
 		{
+			clientSocket = serverSocket.accept();
+			System.out.println("Connection with client found!!");
+			System.out.println("Waiting for input...");
+			gui.changeStatus("Status: Connection Found! place ships on grid");
+			gui.enableOceanButtons();
+
 			out = new ObjectOutputStream(clientSocket.getOutputStream());
 			in = new ObjectInputStream(clientSocket.getInputStream());
 			
@@ -112,6 +125,39 @@ private class CommunicationThread implements Runnable
 			{
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Server: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
+
+
+				// status check to allow player to officially begin game
+				if(recievedCoord.getCoordX() == -1 && recievedCoord.getCoordY() == -1)
+				{
+					gui.enemyDoneStatus(true);
+					if(gui.getSelfStatus())
+					{
+						gui.enableEnemyButtons();
+					}
+					gui.changeStatus("Status: Server begins first");
+				}
+				// validation check, this means that the shot was a hit
+				else if(recievedCoord.getText().equals("y"))
+				{
+					gui.updateAttackBoard(recievedCoord, new ImageIcon( getClass().getResource("batt103.gif")));
+				}
+				// validation check, this means that the shot was a miss
+				else if(recievedCoord.getText().equals("n"))
+				{
+					gui.updateAttackBoard(recievedCoord, new ImageIcon( getClass().getResource("batt102.gif")));
+				}
+				else
+				{
+					if(gui.checkShot(recievedCoord))
+						recievedCoord.setText("y");
+					else
+						recievedCoord.setText("n");
+					
+						
+					out.writeObject(recievedCoord);
+					out.flush();
+				}
 			}
 			
 			System.out.println("Closing client socket...");
@@ -119,11 +165,14 @@ private class CommunicationThread implements Runnable
 			in.close();
 			clientSocket.close();
 		}
+		catch(IOException e )
+		{
+			System.err.println("Accept Failed!");
+		}
 		catch(Exception ex)
 		{
 			System.err.println("Problem reading object");
 		}
-		
 		
 	}
 	

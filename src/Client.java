@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import javax.swing.ImageIcon;
 
 public class Client
 {
@@ -10,8 +11,10 @@ public class Client
 	private ObjectInputStream in;
 
 	private Coordinates recievedCoord;
+	private Coordinates validationShot = new Coordinates(" ", -5, -5);
 
 	private boolean endGame = false;
+	private boolean connectionMade = false;
 	
 	public Client(Gui gui)
 	{
@@ -20,6 +23,8 @@ public class Client
 		if(LookForServer())
 		{
 			System.out.println("Server found!");
+			connectionMade = true;
+			gui.changeStatus("Status: Connection Found! place ships on grid");
 			new ReadingInput();
 		}
 		else
@@ -47,6 +52,11 @@ public class Client
 	{
 		out.writeObject(c);
 		out.flush();
+	}
+
+	public boolean isClientConnected()
+	{
+		return connectionMade;
 	}
 
 	private boolean LookForServer()
@@ -92,12 +102,49 @@ private class ReadingInput implements Runnable
 			{
 				recievedCoord = (Coordinates) in.readObject();
 				System.out.println("Client: " + recievedCoord.getCoordX() + " " + recievedCoord.getCoordY());
+
+
+				if(recievedCoord.getCoordX() == -1 && recievedCoord.getCoordY() == -1)
+				{
+					gui.enemyDoneStatus(true);
+					if(gui.getSelfStatus())
+					{
+						gui.enableEnemyButtons();
+					}
+					gui.changeStatus("Status: Server begins first");
+				}
+				// validation check, this means that the shot was a hit
+				else if(recievedCoord.getText().equals("y"))
+				{
+					gui.updateAttackBoard(recievedCoord, new ImageIcon( getClass().getResource("batt103.gif")));
+				}
+				// validation check, this means that the shot was a miss
+				else if(recievedCoord.getText().equals("n"))
+				{
+					gui.updateAttackBoard(recievedCoord, new ImageIcon( getClass().getResource("batt102.gif")));
+				}
+				else 
+				{
+					if(gui.checkShot(recievedCoord))
+						recievedCoord.setText("y");
+					else
+						recievedCoord.setText("n");
+
+					out.writeObject(recievedCoord);
+					out.flush();
+
+				}
 			}
+		}
+		catch(IOException e)
+		{
+			System.err.println("Problem sending object");
 		}
 		catch(Exception ex)
 		{
 			System.err.println("Problem reading object");
 		}
+
 	}
 } // end of Reading Input class
 
